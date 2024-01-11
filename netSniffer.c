@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     int startPort = atoi(argv[2]);
     int endPort = atoi(argv[3]);
 
+    printf("Scanning %s from port %d to %d\n", ipAddress, startPort, endPort);
     // Loop through the range of ports
     for (int port = startPort; port <= endPort; port++) {
         // Create socket
