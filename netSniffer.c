@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
     WSADATA wsaData;
     int result = WSAStartup(MAKEWORD(2,2), &wsaData);
     if (result != 0) {
-        printf("Winsock initialization failed with error: %d\n", result);
+        printf("Winsock initialization failed with error: %d\n", WSAGetLastError());
         return 1;
     }
 
@@ -39,13 +39,13 @@ int main(int argc, char *argv[]) {
 
         // Connect to the port
         if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0) {
-            printf("Port %d: Closed or filtered\n", port);
+            printf("Port %d: Closed or filtered, Error %d\n", port, WSAGetLastError);
         } else {
             printf("Port %d: Open\n", port);
             closesocket(sock);
         }
     }
-
+    printf("Scan complete\n");
     WSACleanup();
     return 0;
 }
