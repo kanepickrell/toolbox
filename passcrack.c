@@ -23,7 +23,20 @@ void readHashFile(const char *hashFile, char hashes[][MAX_HASH_LENGTH], int *num
 }
 
 
-void readDictionary(const char *wordlist, void (*hashFunc)(const char*, char*)) {
+// This function should be replaced with an actual hashing function (e.g., MD5, SHA-1)
+void hashFunc(const char *input, char *output) {
+    // Implement the actual hash function or use a library here
+}
+
+void compareAndPrintMatch(const char *word, const char *hashedWord, char hashes[][MAX_HASH_LENGTH], int numHashes) {
+    for (int i = 0; i < numHashes; i++) {
+        if (strcmp(hashes[i], hashedWord) == 0) {
+            printf("Match found! Password: %s\n", word);
+            break;}
+    }
+}
+
+void readDictionary(const char *wordlist, char hashes[][MAX_HASH_LENGTH], int numHashes) {
     FILE *file = fopen(wordlist, "r");
     if (file == NULL) {
         perror("Error opening dictionary file");
@@ -34,8 +47,8 @@ void readDictionary(const char *wordlist, void (*hashFunc)(const char*, char*)) 
     while (fgets(word, sizeof(word), file)) {
         word[strcspn(word, "\n")] = 0; // Remove newline
         char hashedWord[MAX_HASH_LENGTH];
-        hashFunc(word, hashedWord);
-        // Compare hashedWord with your hashes here
+        hashFunc(word, hashedWord);  // Hash each word
+        compareAndPrintMatch(word, hashedWord, hashes, numHashes);  // Compare hash
     }
 
     fclose(file);
@@ -72,7 +85,7 @@ int main(int argc, char *argv[]) {
     int numHashes = 0;
     readHashFile(hashFile, hashes, &numHashes);
 
-    readDictionary(wordlist, simpleHashFunc);
+    readDictionary(wordlist, hashes, numHashes);
 
 
     return 0;
