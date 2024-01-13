@@ -39,7 +39,7 @@ void compareAndPrintMatch(const char *word, const char *hashedWord, char hashes[
 void readDictionary(const char *wordlist, char hashes[][MAX_HASH_LENGTH], int numHashes) {
     FILE *file = fopen(wordlist, "r");
     if (file == NULL) {
-        perror("Error opening dictionary file");
+        perror("Error opening dictionary txt file");
         exit(1);
     }
 
